@@ -1,0 +1,15 @@
+# Compiled binaries and objects
+*.exe
+*.o
+*.obj
+
+# Operating System files
+Thumbs.db
+Desktop.ini
+.DS_Store
+
+# Editor and IDE directories
+.vscode/
+.idea/
+*.swp
+*.bak

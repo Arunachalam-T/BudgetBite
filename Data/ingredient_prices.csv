@@ -1,0 +1,48 @@
+# BudgetBite Ingredient Prices
+# Source: Government of India, FCAINFOWEB retail price portal (fcainfoweb.nic.in)
+# Price date: 2024-11 (All India average retail)
+# IMPORTANT: These are ESTIMATED prices sourced from the dataset. They are NOT live market prices.
+# They may differ from prices in your local market. Edit the price_inr_per_unit column to match
+# your actual local prices before generating a meal plan.
+#
+# Columns:
+#   commodity        - Commodity name as used in the dataset
+#   price_inr_per_unit - Price in Indian Rupees per unit
+#   unit             - Unit of measurement
+#   notes            - Extra context
+commodity,price_inr_per_unit,unit,notes
+Atta (Wheat),33.00,kg,Retail estimate (Nov 2024)
+Bajra (whole),24.00,kg,Retail estimate (Nov 2024)
+Banana,40.00,dozen,Retail estimate (Nov 2024)
+Besan,75.00,kg,Retail estimate (Nov 2024)
+Black Pepper (whole),600.00,100g,Retail estimate (Nov 2024)
+Brinjal,30.00,kg,Retail estimate (Nov 2024)
+Butter (Pasteurised),480.00,kg,Retail estimate (Nov 2024)
+Coriander (whole),120.00,kg,Retail estimate (Nov 2024)
+Cummin Seed (whole),400.00,kg,Retail estimate (Nov 2024)
+Desi Ghee,700.00,kg,Retail estimate (Nov 2024)
+Eggs,7.00,each,Retail estimate (Nov 2024)
+Garlic,200.00,kg,Retail estimate (Nov 2024)
+Ginger,136.00,kg,Retail estimate (Nov 2024)
+Gram Dal,90.00,kg,Retail estimate (Nov 2024)
+Gur,45.00,kg,Retail estimate (Nov 2024)
+Jowar (whole),26.00,kg,Retail estimate (Nov 2024)
+Maida (wheat),36.00,kg,Retail estimate (Nov 2024)
+Masoor Dal,90.00,kg,Retail estimate (Nov 2024)
+Mean price of six tracked edible oils,150.00,ltr,Retail estimate (Nov 2024)
+Milk (₹/ltr),62.00,ltr,Retail estimate (Nov 2024)
+Moong Dal,115.00,kg,Retail estimate (Nov 2024)
+Mustard Oil (Packed),175.00,ltr,Retail estimate (Nov 2024)
+Onion,35.00,kg,Retail estimate (Nov 2024)
+Potato,30.00,kg,Retail estimate (Nov 2024)
+Ragi (whole),50.00,kg,Retail estimate (Nov 2024)
+Red Chillies (whole),250.00,100g,Retail estimate (Nov 2024)
+Rice,42.00,kg,Retail estimate (Nov 2024)
+Salt Pack (Iodised),22.00,kg,Retail estimate (Nov 2024)
+Sugar,42.00,kg,Retail estimate (Nov 2024)
+Suji (whole),40.00,kg,Retail estimate (Nov 2024)
+Tea Loose,275.00,kg,Retail estimate (Nov 2024)
+Tomato,40.00,kg,Retail estimate (Nov 2024)
+Tur/Arhar Dal,130.00,kg,Retail estimate (Nov 2024)
+Turmeric (powder),150.00,100g,Retail estimate (Nov 2024)
+Urad Dal,110.00,kg,Retail estimate (Nov 2024)

@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BudgetBite | Affordable Indian Meal Planning System</title>
+    <meta name="description" content="Affordable Indian Meal Planning System using C++17 Dynamic Programming and Greedy Optimization with INDB nutrient data.">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🥗</text></svg>">
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="app-header">
+        <div class="header-container">
+            <a href="#" class="brand">
+                <div class="brand-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+                    </svg>
+                </div>
+                <div>
+                    <span class="brand-title">BudgetBite</span>
+                    <span class="brand-subtitle">C++17 Meal Planner &middot; DAA Knapsack DP</span>
+                </div>
+            </a>
+
+            <!-- Navigation Tabs -->
+            <nav class="nav-tabs" id="navTabs">
+                <button class="nav-btn active" data-tab="dashboard">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+                    Dashboard
+                </button>
+                <button class="nav-btn" data-tab="planner">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                    7-Day Meal Plan
+                </button>
+                <button class="nav-btn" data-tab="comparison">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+                    Algorithm Analysis
+                </button>
+                <button class="nav-btn" data-tab="recipes">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+                    Recipe Catalog
+                </button>
+                <button class="nav-btn" data-tab="grocery">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+                    Grocery List
+                </button>
+                <button class="nav-btn" data-tab="runner">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+                    Settings & C++
+                </button>
+            </nav>
+
+            <!-- Quick Actions -->
+            <div class="header-actions">
+                <button class="btn btn-outline btn-sm" id="btnExportJson" title="Export Plan as JSON">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                    Export JSON
+                </button>
+                <button class="btn btn-outline btn-sm" onclick="window.print()" title="Print Plan">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+                    Print
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Data Disclaimer Notice -->
+    <div class="disclaimer-banner">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+        </svg>
+        <span>
+            <strong>Data Disclosure:</strong> Recipe costs are calculated from Anuvaad INDB 2024.11 and official retail price estimates (FCAINFOWEB Nov 2024). They represent benchmark estimates, not live market retail quotes. Missing ingredients are flagged.
+        </span>
+    </div>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+
+        <!-- ==================== TAB 1: DASHBOARD ==================== -->
+        <section class="tab-panel active" id="tab-dashboard">
+            <!-- Active Algorithm Selector -->
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
+                <div>
+                    <h1 style="font-size: 1.75rem; font-weight: 800; color: #FFF; margin-bottom: 0.25rem;">Weekly Planning Dashboard</h1>
+                    <p style="color: var(--text-muted); font-size: 0.9rem;">Overview of 7-day nutritional coverage and budget performance</p>
+                </div>
+                <div class="algo-pill-selector">
+                    <button class="algo-pill-btn active" data-algo="dp">Dynamic Programming Plan</button>
+                    <button class="algo-pill-btn" data-algo="greedy">Greedy Baseline Plan</button>
+                </div>
+            </div>
+
+            <!-- Metric Cards Grid -->
+            <div class="metrics-grid">
+                <div class="metric-card" style="--accent-color: #10B981;">
+                    <div class="metric-header">
+                        <span class="metric-title">Total Cost (7 Days)</span>
+                        <div class="metric-icon-badge">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                        </div>
+                    </div>
+                    <div class="metric-value" id="dashTotalCost">&#8377;0.00</div>
+                    <div class="metric-sub">
+                        <span class="metric-badge badge-success" id="dashBudgetBadge">Within Budget</span>
+                        <span>Budget: &#8377;<span id="dashBudgetTarget">700</span></span>
+                    </div>
+                </div>
+
+                <div class="metric-card" style="--accent-color: #6366F1;">
+                    <div class="metric-header">
+                        <span class="metric-title">Remaining Budget</span>
+                        <div class="metric-icon-badge">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M7 15h0M2 9.5h20"/></svg>
+                        </div>
+                    </div>
+                    <div class="metric-value" id="dashRemainingBudget">&#8377;0.00</div>
+                    <div class="metric-sub">
+                        <span id="dashBudgetPercent">0%</span> of weekly budget unspent
+                    </div>
+                </div>
+
+                <div class="metric-card" style="--accent-color: #F59E0B;">
+                    <div class="metric-header">
+                        <span class="metric-title">Avg Daily Calories</span>
+                        <div class="metric-icon-badge">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                        </div>
+                    </div>
+                    <div class="metric-value" id="dashAvgCalories">0 kcal</div>
+                    <div class="metric-sub">
+                        <span class="metric-badge" id="dashKcalBadge">Evaluating</span>
+                        <span>Target: <span id="dashKcalTarget">2000</span> kcal/day</span>
+                    </div>
+                </div>
+
+                <div class="metric-card" style="--accent-color: #EC4899;">
+                    <div class="metric-header">
+                        <span class="metric-title">Avg Daily Protein</span>
+                        <div class="metric-icon-badge">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8h1a4 4 0 0 1 0 8h-1M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/></svg>
+                        </div>
+                    </div>
+                    <div class="metric-value" id="dashAvgProtein">0 g</div>
+                    <div class="metric-sub">
+                        <span class="metric-badge" id="dashProtBadge">Evaluating</span>
+                        <span>Target: <span id="dashProtTarget">50</span> g/day</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Two Columns: Daily Nutrient Trend & Quick Cost Breakdown -->
+            <div class="dashboard-columns">
+                <div class="card">
+                    <div class="card-title">
+                        <span>Daily Calorie & Protein Fulfillment</span>
+                        <span style="font-size: 0.8rem; color: var(--text-muted); font-weight: 500;">7-Day Trajectory</span>
+                    </div>
+                    <div class="chart-container" id="dashChartDaily">
+                        <!-- Custom SVG Chart dynamically injected by JS -->
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">
+                        <span>Plan Highlights</span>
+                        <span class="metric-badge badge-info" id="dashAlgoBadge">DP Active</span>
+                    </div>
+                    <div style="display: flex; flex-direction: column; gap: 0.85rem; font-size: 0.88rem;">
+                        <div style="display: flex; justify-content: space-between; border-bottom: 1px solid var(--border-subtle); padding-bottom: 0.5rem;">
+                            <span style="color: var(--text-muted);">Dietary Filter:</span>
+                            <strong id="dashDietPref" style="text-transform: capitalize;">Any</strong>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; border-bottom: 1px solid var(--border-subtle); padding-bottom: 0.5rem;">
+                            <span style="color: var(--text-muted);">Total Recipes in Catalog:</span>
+                            <strong id="dashTotalRecipes">1,014</strong>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; border-bottom: 1px solid var(--border-subtle); padding-bottom: 0.5rem;">
+                            <span style="color: var(--text-muted);">Priced Ingredient Lines:</span>
+                            <span style="color: #34D399; font-weight: 700;">Verified INDB</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; border-bottom: 1px solid var(--border-subtle); padding-bottom: 0.5rem;">
+                            <span style="color: var(--text-muted);">Optimization Engine:</span>
+                            <strong style="color: var(--primary-light);">C++17 Native</strong>
+                        </div>
+                    </div>
+                    <div style="margin-top: 1.5rem;">
+                        <button class="btn btn-primary" style="width: 100%;" onclick="document.querySelector('[data-tab=\'planner\']').click()">
+                            View Complete 7-Day Plan &rarr;
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== TAB 2: 7-DAY MEAL PLAN ==================== -->
+        <section class="tab-panel" id="tab-planner">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
+                <div>
+                    <h2 style="font-size: 1.5rem; font-weight: 800; color: #FFF;">7-Day Meal Schedule</h2>
+                    <p style="color: var(--text-muted); font-size: 0.9rem;">Breakfast, Lunch, and Dinner optimized per day. Click any meal to view recipe ingredients & nutrition.</p>
+                </div>
+                <div class="algo-pill-selector">
+                    <button class="algo-pill-btn active" data-algo="dp">Dynamic Programming</button>
+                    <button class="algo-pill-btn" data-algo="greedy">Greedy Baseline</button>
+                </div>
+            </div>
+
+            <!-- Days Container -->
+            <div class="plan-days-container" id="plannerDaysContainer">
+                <!-- Dynamically rendered day cards -->
+            </div>
+        </section>
+
+        <!-- ==================== TAB 3: ALGORITHM ANALYSIS ==================== -->
+        <section class="tab-panel" id="tab-comparison">
+            <div class="comparison-hero">
+                <h2 style="font-size: 1.6rem; font-weight: 800; color: #FFF; margin-bottom: 0.5rem;">Algorithm Comparison: Dynamic Programming vs Greedy</h2>
+                <p style="color: var(--text-secondary); max-width: 900px; font-size: 0.95rem;">
+                    Undergraduate Design & Analysis of Algorithms (DAA) benchmark study. This analysis evaluates both algorithms on the exact same constraints, candidate recipe pool, and 7-day planning horizon.
+                </p>
+            </div>
+
+            <!-- Side by side comparison table -->
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3 class="card-title">Side-by-Side Performance Matrix</h3>
+                <div style="overflow-x: auto;">
+                    <table class="compare-table">
+                        <thead>
+                            <tr>
+                                <th>Metric</th>
+                                <th>Dynamic Programming (0-1 Knapsack)</th>
+                                <th>Greedy Baseline (Ratio Heuristic)</th>
+                                <th>Winner / Insight</th>
+                            </tr>
+                        </thead>
+                        <tbody id="compareTableBody">
+                            <!-- Injected by JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Comparative Visual Chart -->
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3 class="card-title">Visual Comparison: Cost, Energy & Protein Fulfillment</h3>
+                <div class="chart-container" id="compareChartContainer" style="height: 280px;">
+                    <!-- Injected by JS -->
+                </div>
+            </div>
+
+            <!-- Academic DAA Formulation Documentation -->
+            <div class="card">
+                <h3 class="card-title">Undergraduate DAA Algorithm Documentation</h3>
+                
+                <h4 style="color: var(--primary-light); margin-top: 1rem; margin-bottom: 0.5rem;">1. Dynamic Programming Formulation (Multi-Choice Knapsack Variant)</h4>
+                <p style="color: var(--text-secondary); font-size: 0.92rem; margin-bottom: 0.75rem;">
+                    The meal planning problem is modelled as a constrained optimization problem analogous to the 0-1 Knapsack / Multiple-Choice Knapsack problem. 
+                    We discretize the total weekly budget \(B\) into \(W = 1000\) discrete cost quanta. There are \(D = 7\) days and \(S = 3\) meal slots per day (total \(21\) decisions).
+                </p>
+
+                <div class="math-box">
+State Definition:
+  dp[s][j] = Maximum cumulative nutritional value achievable considering meal slots 0 .. s
+             using at most j budget units (where j &isin; [0, W]).
+
+Value Metric:
+  value(r) = 0.5 * (kcal_r / target_kcal_slot) + 0.5 * (protein_r / target_protein_slot)
+
+Recurrence Relation:
+  For each slot s from 0 to 20:
+    For each candidate recipe r eligible for slot (s mod 3):
+      cost_u = round(effective_cost(r) * W / weekly_budget)
+      dp[j]  = max( dp[j], dp_prev[j - cost_u] + value(r) )   for j = W down to cost_u
+
+Backtracking / Reconstruction:
+  choice[s][j] stores the candidate index selected to produce the optimal transition,
+  allowing an exact O(D * S) traceback path.
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 1.5rem;">
+                    <div style="background: var(--bg-card-solid); padding: 1.25rem; border-radius: var(--radius-md); border: 1px solid var(--border-subtle);">
+                        <h5 style="color: #34D399; font-weight: 700; margin-bottom: 0.5rem;">Time & Space Complexity: DP</h5>
+                        <ul style="color: var(--text-secondary); font-size: 0.88rem; list-style-position: inside; line-height: 1.8;">
+                            <li><strong>Time Complexity:</strong> <span style="font-family: var(--font-mono); color: #FFF;">O(D &times; S &times; R &times; W)</span> where \(D=7\), \(S=3\), \(R \approx 350\) candidate recipes, and \(W=1000\). Total operations: &approx; 7.3 &times; 10<sup>6</sup> (computes in &lt; 50 ms in C++17).</li>
+                            <li><strong>Space Complexity:</strong> <span style="font-family: var(--font-mono); color: #FFF;">O(W)</span> for 1-D rolling DP state, and <span style="font-family: var(--font-mono); color: #FFF;">O(D &times; S &times; W)</span> for the choice reconstruction matrix.</li>
+                        </ul>
+                    </div>
+
+                    <div style="background: var(--bg-card-solid); padding: 1.25rem; border-radius: var(--radius-md); border: 1px solid var(--border-subtle);">
+                        <h5 style="color: #FBBF24; font-weight: 700; margin-bottom: 0.5rem;">Time & Space Complexity: Greedy Baseline</h5>
+                        <ul style="color: var(--text-secondary); font-size: 0.88rem; list-style-position: inside; line-height: 1.8;">
+                            <li><strong>Time Complexity:</strong> <span style="font-family: var(--font-mono); color: #FFF;">O(D &times; S &times; R &times; log R)</span> to sort recipes by density ratio \(\frac{\text{value}(r)}{\text{cost}(r)}\).</li>
+                            <li><strong>Space Complexity:</strong> <span style="font-family: var(--font-mono); color: #FFF;">O(R)</span> auxiliary space for candidate pointers.</li>
+                            <li><strong>Theoretical Flaw of Greedy:</strong> Because the knapsack decision is discrete (cannot take fractional portions of a recipe), Greedy makes locally optimal choices that can prematurely exhaust the budget or leave leftover budget that could have unlocked significantly superior options.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== TAB 4: RECIPE CATALOG ==================== -->
+        <section class="tab-panel" id="tab-recipes">
+            <div style="margin-bottom: 1.5rem;">
+                <h2 style="font-size: 1.5rem; font-weight: 800; color: #FFF; margin-bottom: 0.25rem;">Recipe Browser & Nutritional Directory</h2>
+                <p style="color: var(--text-muted); font-size: 0.9rem;">Browse 1,014 authentic Indian recipes from INDB 2024.11. Click any recipe card for detailed ingredient lists and micro-nutrients.</p>
+            </div>
+
+            <!-- Filters & Search -->
+            <div class="search-bar-row">
+                <div class="search-input-wrap">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                    <input type="text" class="search-input" id="recipeSearchInput" placeholder="Search recipes by name, ingredient, e.g. 'Poha', 'Dal', 'Paneer'...">
+                </div>
+
+                <select class="filter-select" id="filterMealType">
+                    <option value="all">All Meal Types</option>
+                    <option value="breakfast">Breakfast</option>
+                    <option value="lunch">Lunch</option>
+                    <option value="dinner">Dinner</option>
+                    <option value="beverage">Beverage</option>
+                </select>
+
+                <select class="filter-select" id="filterDiet">
+                    <option value="all">All Diets</option>
+                    <option value="veg">Vegetarian</option>
+                    <option value="vegan">Vegan</option>
+                    <option value="nonveg">Non-Vegetarian</option>
+                </select>
+
+                <select class="filter-select" id="filterCost">
+                    <option value="all">All Pricing Statuses</option>
+                    <option value="priced">Has Cost Estimate</option>
+                    <option value="complete">100% Complete Estimate</option>
+                </select>
+            </div>
+
+            <!-- Recipe Counter -->
+            <div style="margin-bottom: 1rem; color: var(--text-muted); font-size: 0.85rem;" id="recipeCatalogCount">
+                Showing recipes...
+            </div>
+
+            <!-- Recipes Grid -->
+            <div class="recipes-grid" id="recipesGrid">
+                <!-- Dynamically populated -->
+            </div>
+
+            <!-- Pagination Bar -->
+            <div style="display: flex; justify-content: center; align-items: center; gap: 1rem; margin-top: 2rem;" id="recipePagination">
+                <button class="btn btn-outline btn-sm" id="btnPrevPage">&larr; Previous</button>
+                <span style="font-size: 0.88rem; color: var(--text-muted);" id="pageIndicator">Page 1</span>
+                <button class="btn btn-outline btn-sm" id="btnNextPage">Next &rarr;</button>
+            </div>
+        </section>
+
+        <!-- ==================== TAB 5: GROCERY SHOPPING LIST ==================== -->
+        <section class="tab-panel" id="tab-grocery">
+            <div class="grocery-toolbar">
+                <div>
+                    <h2 style="font-size: 1.5rem; font-weight: 800; color: #FFF; margin-bottom: 0.25rem;">Consolidated Grocery Shopping List</h2>
+                    <p style="color: var(--text-muted); font-size: 0.9rem;">Total ingredient quantities aggregated across all 21 meals in the chosen plan.</p>
+                </div>
+                <div style="display: flex; gap: 0.75rem; align-items: center; flex-wrap: wrap;">
+                    <div class="algo-pill-selector">
+                        <button class="algo-pill-btn active" data-grocery-algo="dp">DP Plan List</button>
+                        <button class="algo-pill-btn" data-grocery-algo="greedy">Greedy Plan List</button>
+                    </div>
+                    <button class="btn btn-outline btn-sm" id="btnExportGroceryTxt">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                        Export Text
+                    </button>
+                    <button class="btn btn-outline btn-sm" onclick="window.print()">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+                        Print List
+                    </button>
+                </div>
+            </div>
+
+            <!-- Grocery Items Grid -->
+            <div class="grocery-list-items" id="groceryListContainer">
+                <!-- Dynamically populated -->
+            </div>
+        </section>
+
+        <!-- ==================== TAB 6: SETTINGS & C++ RUNNER ==================== -->
+        <section class="tab-panel" id="tab-runner">
+            <div style="margin-bottom: 1.5rem;">
+                <h2 style="font-size: 1.5rem; font-weight: 800; color: #FFF; margin-bottom: 0.25rem;">Parameters & Native C++ Optimizer Runner</h2>
+                <p style="color: var(--text-muted); font-size: 0.9rem;">
+                    Configure custom budget constraints and generate the exact native C++ command to execute <code style="color: var(--primary-light);">budgetbite.exe</code>.
+                </p>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+                <!-- Parameter Form -->
+                <div class="card">
+                    <h3 class="card-title">User Optimization Constraints</h3>
+                    
+                    <div style="display: flex; flex-direction: column; gap: 1.25rem;">
+                        <div>
+                            <label style="display: block; font-size: 0.85rem; font-weight: 600; color: var(--text-secondary); margin-bottom: 0.4rem;">
+                                Weekly Budget (INR &#8377;)
+                            </label>
+                            <input type="number" id="inputBudget" value="700" min="100" max="10000" step="50" class="search-input">
+                        </div>
+
+                        <div>
+                            <label style="display: block; font-size: 0.85rem; font-weight: 600; color: var(--text-secondary); margin-bottom: 0.4rem;">
+                                Daily Calorie Target (kcal)
+                            </label>
+                            <input type="number" id="inputKcal" value="2000" min="800" max="4000" step="100" class="search-input">
+                        </div>
+
+                        <div>
+                            <label style="display: block; font-size: 0.85rem; font-weight: 600; color: var(--text-secondary); margin-bottom: 0.4rem;">
+                                Daily Protein Target (grams)
+                            </label>
+                            <input type="number" id="inputProtein" value="50" min="20" max="200" step="5" class="search-input">
+                        </div>
+
+                        <div>
+                            <label style="display: block; font-size: 0.85rem; font-weight: 600; color: var(--text-secondary); margin-bottom: 0.4rem;">
+                                Dietary Preference
+                            </label>
+                            <select id="inputDiet" class="filter-select" style="width: 100%;">
+                                <option value="any">Any (Include all meals)</option>
+                                <option value="vegetarian">Vegetarian</option>
+                                <option value="vegan">Vegan</option>
+                                <option value="non-vegetarian">Non-Vegetarian</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Generated Command & Execution Instructions -->
+                <div class="card">
+                    <h3 class="card-title">C++ Execution Command</h3>
+                    <p style="color: var(--text-secondary); font-size: 0.88rem; margin-bottom: 1rem;">
+                        Run this command in PowerShell or Command Prompt to execute the C++ optimization algorithms:
+                    </p>
+
+                    <div class="math-box" id="cliCommandBox" style="user-select: all; cursor: pointer; color: #34D399;">
+                        .\budgetbite.exe --budget 700 --kcal 2000 --protein 50 --diet any --out "web/meal_plan.json"
+                    </div>
+
+                    <div style="display: flex; gap: 0.75rem; margin-top: 1rem;">
+                        <button class="btn btn-primary btn-sm" id="btnCopyCli">Copy Command</button>
+                        <button class="btn btn-outline btn-sm" id="btnDownloadBat">Download .BAT Script</button>
+                    </div>
+
+                    <hr style="border: 0; border-top: 1px solid var(--border-subtle); margin: 1.5rem 0;">
+
+                    <h4 style="font-size: 0.95rem; font-weight: 700; color: #FFF; margin-bottom: 0.5rem;">Load Generated JSON into Interface</h4>
+                    <p style="color: var(--text-muted); font-size: 0.82rem; margin-bottom: 0.75rem;">
+                        After running the C++ program, you can load the newly produced <code style="color: var(--primary-light);">web/meal_plan.json</code> directly:
+                    </p>
+                    <input type="file" id="jsonFileInput" accept=".json" style="font-size: 0.85rem; color: var(--text-secondary);">
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Recipe Detail Modal Popup -->
+    <div class="modal-overlay" id="recipeModal">
+        <div class="modal-card">
+            <button class="modal-close-btn" id="modalCloseBtn">&times;</button>
+            <div id="modalBody">
+                <!-- Dynamically populated -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Application Logic (Vanilla JavaScript) -->
+    <script src="meal_plan_data.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
