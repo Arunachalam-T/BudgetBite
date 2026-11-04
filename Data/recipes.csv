@@ -1,0 +1,24 @@
+Recipe_ID,Recipe_Name,Meal_Type
+REC001,Oat Porridge with Banana & Milk,Breakfast
+REC002,Poha with Peanuts & Veggies,Breakfast
+REC003,Masala Egg Omelette with Whole Wheat Toast,Breakfast
+REC004,Besan Chilla with Curd,Breakfast
+REC005,Moong Dal Cheela with Mint Curd,Breakfast
+REC006,Dal Tadka with Steamed Rice,Lunch
+REC007,Palak Paneer with Wheat Roti,Lunch
+REC008,Homestyle Chicken Curry with Rice,Lunch
+REC009,Rohu Fish Curry with Steamed Rice,Lunch
+REC010,Rajma Masala with Basmati Rice,Lunch
+REC011,Chole Masala with Roti,Lunch
+REC012,Roasted Peanuts & Banana Chaat,Snack
+REC013,Sprouted Moong Salad with Veggies,Snack
+REC014,Curd with Banana & Honey,Snack
+REC015,Boiled Eggs with Spices,Snack
+REC016,Masala Paneer Cubes,Snack
+REC017,Moong Dal Khichdi with Desi Ghee,Dinner
+REC018,Paneer Bhurji with Whole Wheat Roti,Dinner
+REC019,Grilled Chicken Breast with Steamed Veggies,Dinner
+REC020,Egg Curry with Whole Wheat Roti,Dinner
+REC021,Aloo Matar with Whole Wheat Roti,Dinner
+REC022,Steamed Fish with Sauteed Spinach & Potatoes,Dinner
+

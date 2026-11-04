@@ -1,24 +1,25 @@
 @echo off
-echo =====================================================================
-echo  BudgetBite - Affordable Meal Planning System Runner
-echo =====================================================================
+setlocal
+REM run.bat — Start SmartMeal Optimizer server
+set ROOT=%~dp0
+set SERVER=%ROOT%backend\build\release\bin\smartmeal_server.exe
+set PORT=8080
+
+set MINGW_BIN=C:\Users\Arunachalam\AppData\Local\Microsoft\WinGet\Packages\BrechtSanders.WinLibs.POSIX.UCRT_Microsoft.Winget.Source_8wekyb3d8bbwe\mingw64\bin
+
+if exist "%MINGW_BIN%" (
+    set "PATH=%MINGW_BIN%;%PATH%"
+)
+
+if not exist "%SERVER%" (
+    echo [ERROR] Server not built yet. Run build.bat first.
+    exit /b 1
+)
+
+echo ============================================================
+echo   SmartMeal Optimizer - Backend API Server
+echo ============================================================
+echo [SmartMeal] Starting REST API server on http://localhost:%PORT%
+echo [SmartMeal] Press Ctrl+C to stop.
 echo.
-
-if not exist budgetbite.exe (
-    echo [INFO] budgetbite.exe not found. Running build.bat first...
-    call build.bat
-    if %errorlevel% neq 0 exit /b %errorlevel%
-)
-
-echo Executing C++ optimization engine...
-budgetbite.exe --csv "Data/indian_meal_planner_indb_2024_11 (1).csv" --budget 700 --kcal 2000 --protein 50 --diet any --out "web/meal_plan.json"
-
-if %errorlevel% equ 0 (
-    echo.
-    echo [SUCCESS] Optimization complete!
-    echo Opening Web Interface in your default browser...
-    start "" "web\index.html"
-) else (
-    echo [ERROR] Optimizer encountered an issue.
-    pause
-)
+"%SERVER%" %PORT%

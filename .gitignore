@@ -1,15 +1,23 @@
-# Compiled binaries and objects
+# Build output
+backend/build/
+frontend/node_modules/
+frontend/dist/
+
+# IDE
+.vscode/settings.json
+*.user
+.vs/
+
+# Generated output
+*.xlsx
+!data/SmartMeal_Input_Template.xlsx
+!Data/SmartMeal_Input_Template.xlsx
+
+# Compiled
 *.exe
 *.o
-*.obj
+*.a
 
-# Operating System files
-Thumbs.db
-Desktop.ini
-.DS_Store
+# Logs
+*.log
 
-# Editor and IDE directories
-.vscode/
-.idea/
-*.swp
-*.bak

@@ -1,0 +1,28 @@
+Ingredient_ID,Name,Price_per_kg_INR,Calories_per_100g,Protein_g_per_100g,Carbs_g_per_100g,Fat_g_per_100g,Diet_Category
+ING001,Rice (Raw),45.00,350.0,7.0,78.0,0.6,Plant-based
+ING002,Toor Dal,120.00,343.0,22.3,57.6,1.7,Plant-based
+ING003,Atta (Whole Wheat Flour),38.00,340.0,12.1,71.2,1.7,Plant-based
+ING004,Paneer (Cottage Cheese),380.00,296.0,18.3,4.5,23.0,Dairy
+ING005,Milk (Cow),62.00,67.0,3.2,4.8,3.9,Dairy
+ING006,Eggs,140.00,143.0,12.6,0.7,9.5,Eggs
+ING007,Chicken Breast,240.00,165.0,31.0,0.0,3.6,Meat
+ING008,Fish (Rohu Fillet),280.00,102.0,17.5,0.0,3.0,Fish/Seafood
+ING009,Mustard Oil,160.00,884.0,0.0,0.0,100.0,Plant-based
+ING010,Onion,35.00,40.0,1.1,9.3,0.1,Plant-based
+ING011,Tomato,30.00,18.0,0.9,3.9,0.2,Plant-based
+ING012,Potato,25.00,77.0,2.0,17.5,0.1,Plant-based
+ING013,Spinach (Palak),40.00,23.0,2.9,3.6,0.4,Plant-based
+ING014,Rolled Oats,120.00,389.0,16.9,66.3,6.9,Plant-based
+ING015,Poha (Flattened Rice),55.00,353.0,6.7,77.3,1.0,Plant-based
+ING016,Moong Dal (Yellow Split),130.00,347.0,24.5,59.9,1.2,Plant-based
+ING017,Curd (Plain Yogurt),70.00,61.0,3.5,4.7,3.3,Dairy
+ING018,Peanuts (Roasted),150.00,567.0,25.8,16.1,49.2,Plant-based
+ING019,Banana,50.00,89.0,1.1,22.8,0.3,Plant-based
+ING020,Besan (Gram Flour),85.00,387.0,22.4,57.8,6.7,Plant-based
+ING021,Desi Ghee,680.00,900.0,0.0,0.0,100.0,Dairy
+ING022,Rajma (Kidney Beans),140.00,333.0,24.0,60.0,1.0,Plant-based
+ING023,Chole (Kabuli Chickpeas),135.00,364.0,19.3,60.6,6.0,Plant-based
+ING024,Green Peas,60.00,81.0,5.4,14.5,0.4,Plant-based
+ING025,Spices & Salt Mix,180.00,150.0,5.0,25.0,3.0,Plant-based
+ING026,Honey,350.00,304.0,0.3,82.4,0.0,Animal-derived
+
