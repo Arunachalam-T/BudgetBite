@@ -30,9 +30,21 @@ export default function SettingsPage() {
 
   const handleChange = (e) => {
     const { name, value, type } = e.target
+    const intFields = ['meals_per_day', 'max_recipe_repetitions']
+    const floatFields = [
+      'weekly_budget_inr', 'min_calories', 'max_calories',
+      'min_protein', 'min_carbs', 'max_fat',
+      'target_calories', 'target_protein', 'target_carbs', 'target_fat'
+    ]
+    let parsedValue = value
+    if (intFields.includes(name)) {
+      parsedValue = parseInt(value, 10) || 0
+    } else if (type === 'number' || floatFields.includes(name)) {
+      parsedValue = parseFloat(value) || 0
+    }
     setLocalCfg(c => ({
       ...c,
-      [name]: type === 'number' ? parseFloat(value) || 0 : value,
+      [name]: parsedValue,
     }))
     setSaved(false)
     setValidationResult(null)
