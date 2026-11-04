@@ -333,26 +333,6 @@ void run_api_server(int port, AppState& state) {
             if (body.contains("max_time_seconds")) limits.max_time_seconds = body["max_time_seconds"];
             if (body.contains("max_nodes"))        limits.max_nodes        = body["max_nodes"];
 
-            // Validate configuration and limits
-            auto vr = Validator::validate_config(cfg, state.dataset);
-            if (limits.max_time_seconds <= 0.0) {
-                vr.messages.push_back({ValidationMessage::Severity::FATAL, "Limits", -1, "max_time_seconds must be positive"});
-                vr.is_valid = false;
-            }
-            if (limits.max_nodes <= 0) {
-                vr.messages.push_back({ValidationMessage::Severity::FATAL, "Limits", -1, "max_nodes must be positive"});
-                vr.is_valid = false;
-            }
-
-            if (!vr.is_valid || vr.has_fatal()) {
-                res.code = 400;
-                res.body = json{
-                    {"error", "Invalid optimization configuration"},
-                    {"validation", validation_to_json(vr)}
-                }.dump();
-                return res;
-            }
-
             std::unique_ptr<IOptimizationAlgorithm> algo;
             if (algo_name == "Brute Force")         algo = std::make_unique<BruteForce>();
             else if (algo_name == "Greedy")         algo = std::make_unique<Greedy>();
@@ -363,20 +343,11 @@ void run_api_server(int port, AppState& state) {
             auto result = algo->solve(state.dataset, cfg, mode, limits);
             state.config = cfg;
 
-            // Store per mode paired with the configuration used
+            // Store per mode
             switch (mode) {
-                case OptimizationMode::NUTRITION:
-                    state.latest_nutrition = result;
-                    state.latest_nutrition_config = cfg;
-                    break;
-                case OptimizationMode::BUDGET:
-                    state.latest_budget = result;
-                    state.latest_budget_config = cfg;
-                    break;
-                case OptimizationMode::VARIETY:
-                    state.latest_variety = result;
-                    state.latest_variety_config = cfg;
-                    break;
+                case OptimizationMode::NUTRITION: state.latest_nutrition = result; break;
+                case OptimizationMode::BUDGET:    state.latest_budget    = result; break;
+                case OptimizationMode::VARIETY:   state.latest_variety   = result; break;
             }
 
             res.body = algo_result_to_json(result).dump();
@@ -410,29 +381,8 @@ void run_api_server(int port, AppState& state) {
             if (body.contains("max_time_seconds")) limits.max_time_seconds = body["max_time_seconds"];
             if (body.contains("max_nodes"))        limits.max_nodes        = body["max_nodes"];
 
-            // Validate configuration and limits
-            auto vr = Validator::validate_config(cfg, state.dataset);
-            if (limits.max_time_seconds <= 0.0) {
-                vr.messages.push_back({ValidationMessage::Severity::FATAL, "Limits", -1, "max_time_seconds must be positive"});
-                vr.is_valid = false;
-            }
-            if (limits.max_nodes <= 0) {
-                vr.messages.push_back({ValidationMessage::Severity::FATAL, "Limits", -1, "max_nodes must be positive"});
-                vr.is_valid = false;
-            }
-
-            if (!vr.is_valid || vr.has_fatal()) {
-                res.code = 400;
-                res.body = json{
-                    {"error", "Invalid optimization configuration"},
-                    {"validation", validation_to_json(vr)}
-                }.dump();
-                return res;
-            }
-
             auto bench = Benchmark::run_all(state.dataset, cfg, mode, limits);
             state.latest_benchmark = bench;
-            state.latest_benchmark_config = cfg;
             state.config = cfg;
 
             json results = json::array();
@@ -487,23 +437,13 @@ void run_api_server(int port, AppState& state) {
             std::string filepath = body.value("filepath","SmartMeal_Output.xlsx");
 
             std::optional<AlgorithmResult>* src = nullptr;
-            std::optional<OptimizationConfig>* src_cfg = nullptr;
             switch (mode) {
-                case OptimizationMode::NUTRITION:
-                    src = &state.latest_nutrition;
-                    src_cfg = &state.latest_nutrition_config;
-                    break;
-                case OptimizationMode::BUDGET:
-                    src = &state.latest_budget;
-                    src_cfg = &state.latest_budget_config;
-                    break;
-                case OptimizationMode::VARIETY:
-                    src = &state.latest_variety;
-                    src_cfg = &state.latest_variety_config;
-                    break;
+                case OptimizationMode::NUTRITION: src = &state.latest_nutrition; break;
+                case OptimizationMode::BUDGET:    src = &state.latest_budget;    break;
+                case OptimizationMode::VARIETY:   src = &state.latest_variety;   break;
             }
 
-            if (!src || !*src || !(*src)->is_feasible || !src_cfg || !*src_cfg) {
+            if (!src || !*src || !(*src)->is_feasible) {
                 res.code = 400;
                 res.body = json{{"error","No feasible plan available for mode: " + mode_str}}.dump();
                 return res;
@@ -512,7 +452,7 @@ void run_api_server(int port, AppState& state) {
             std::string err;
             bool ok = ExcelExporter::export_workbook(
                 filepath, (*src)->best_plan, (*src)->evaluation,
-                **src_cfg, state.dataset, mode_str, err);
+                state.config, state.dataset, mode_str, err);
 
             if (!ok) {
                 res.code = 500;
