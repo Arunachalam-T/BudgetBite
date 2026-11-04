@@ -2,7 +2,6 @@
 
 #include "brute_force.h"
 #include "plan_evaluator.h"
-#include "greedy.h"
 #include <chrono>
 #include <vector>
 #include <functional>
@@ -43,6 +42,7 @@ AlgorithmResult BruteForce::solve(
 
     // Total slots = n_days * n_slots
     int total_slots = n_days * n_slots;
+    // slot_types[i] = meal type for the i-th slot in enumeration
     std::vector<std::string> slot_types;
     slot_types.reserve(total_slots);
     for (int d = 0; d < n_days; ++d)
@@ -64,21 +64,11 @@ AlgorithmResult BruteForce::solve(
     EvaluationResult best_eval;
     MealPlan         best_plan;
 
-    // Primal Heuristic: Seed with Greedy heuristic so if search times out
-    // on large instances, we return a valid feasible solution rather than failing.
-    Greedy greedy;
-    auto g_res = greedy.solve(dataset, config, mode, limits);
-    if (g_res.is_feasible) {
-        best_plan = g_res.best_plan;
-        best_eval = g_res.evaluation;
-        found_any = true;
-    }
-
     // Iterate all combinations
     while (true) {
         // Check time limit
         auto elapsed = std::chrono::steady_clock::now() - start;
-        if (elapsed >= time_limit) {
+       if (elapsed >= time_limit) {
             interrupted = true;
             result.termination_reason = "Time limit reached (" +
                 std::to_string(limits.max_time_seconds) + "s)";
@@ -157,3 +147,4 @@ AlgorithmResult BruteForce::solve(
 
     return result;
 }
+

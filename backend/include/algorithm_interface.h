@@ -58,8 +58,8 @@ struct AlgorithmResult {
 
 // ─── Execution limits (used by all algorithms) ───────────────────────────
 struct ExecutionLimits {
-    double    max_time_seconds  = 15.0;
-    long long max_nodes         = 1'000'000LL;
+    double    max_time_seconds  = 60.0;
+    long long max_nodes         = 10'000'000LL;
 };
 
 // ─── Algorithm interface ──────────────────────────────────────────────────
