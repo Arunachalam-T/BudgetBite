@@ -15,11 +15,18 @@ struct AppState {
     ValidationResult            validation;
     OptimizationConfig          config;
 
-    // Latest results per mode
-    std::optional<AlgorithmResult> latest_nutrition;
-    std::optional<AlgorithmResult> latest_budget;
-    std::optional<AlgorithmResult> latest_variety;
-    std::optional<BenchmarkResult> latest_benchmark;
+    // Latest results per mode paired with the configuration used to generate them
+    std::optional<AlgorithmResult>    latest_nutrition;
+    std::optional<OptimizationConfig> latest_nutrition_config;
+
+    std::optional<AlgorithmResult>    latest_budget;
+    std::optional<OptimizationConfig> latest_budget_config;
+
+    std::optional<AlgorithmResult>    latest_variety;
+    std::optional<OptimizationConfig> latest_variety_config;
+
+    std::optional<BenchmarkResult>    latest_benchmark;
+    std::optional<OptimizationConfig> latest_benchmark_config;
 
     std::mutex mtx; // protect concurrent access
 };

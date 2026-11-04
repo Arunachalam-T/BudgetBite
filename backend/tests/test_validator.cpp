@@ -97,6 +97,44 @@ static void test_negative_price() {
     VASSERT(!vr.is_valid, "Negative price detected");
 }
 
+static void test_invalid_config_meals_per_day() {
+    std::cout << "\n[test_invalid_config_meals_per_day]\n";
+    auto ds = make_valid_dataset();
+    OptimizationConfig cfg;
+    cfg.meals_per_day = 1;
+    auto vr1 = Validator::validate_config(cfg, ds);
+    VASSERT(!vr1.is_valid && vr1.has_fatal(), "meals_per_day = 1 rejected");
+
+    cfg.meals_per_day = 5;
+    auto vr5 = Validator::validate_config(cfg, ds);
+    VASSERT(!vr5.is_valid && vr5.has_fatal(), "meals_per_day = 5 rejected");
+
+    cfg.meals_per_day = 3;
+    cfg.weekly_budget_inr = 2000;
+    cfg.constraints.min_calories = 1500;
+    cfg.constraints.max_calories = 2500;
+    cfg.targets.target_calories = 2000;
+    cfg.constraints.min_protein = 50;
+    cfg.targets.target_protein = 75;
+    cfg.constraints.min_carbs = 100;
+    cfg.targets.target_carbs = 200;
+    cfg.constraints.max_fat = 80;
+    cfg.targets.target_fat = 60;
+    auto vrValid = Validator::validate_config(cfg, ds);
+    VASSERT(vrValid.is_valid && !vrValid.has_fatal(), "valid config accepted");
+}
+
+static void test_invalid_config_budget_and_calories() {
+    std::cout << "\n[test_invalid_config_budget_and_calories]\n";
+    auto ds = make_valid_dataset();
+    OptimizationConfig cfg;
+    cfg.weekly_budget_inr = -500;
+    cfg.constraints.min_calories = 2500;
+    cfg.constraints.max_calories = 1500; // inverted
+    auto vr = Validator::validate_config(cfg, ds);
+    VASSERT(!vr.is_valid && vr.has_fatal(), "Negative budget and inverted calories rejected");
+}
+
 int run_validator_tests() {
     std::cout << "=== VALIDATOR TESTS ===\n";
     test_valid_dataset();
@@ -105,6 +143,8 @@ int run_validator_tests() {
     test_recipe_without_ingredients();
     test_unknown_ingredient_reference();
     test_negative_price();
+    test_invalid_config_meals_per_day();
+    test_invalid_config_budget_and_calories();
     return vtest_passed == vtest_run ? 0 : 1;
 }
 
