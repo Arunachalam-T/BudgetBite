@@ -80,49 +80,43 @@ export default function Dashboard() {
           )}
 
           {/* Plan summary */}
-          <div className="card" style={{ marginBottom: 20 }}>
-            <div className="card-title" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <span>7-Day Meal Plan Overview</span>
-              {currentPlan?.is_feasible && (
-                <span className="badge badge-green">
-                  <CheckCircle size={12} /> Feasible Plan Ready
-                </span>
-              )}
-            </div>
-            {currentPlan?.is_feasible ? (
-              <div style={{ display: 'flex', gap: 24, flexWrap: 'wrap', alignItems: 'center', marginTop: 10 }}>
-                <div>
-                  <div style={{ fontSize: 12, color: 'var(--color-text-muted)' }}>Purchase Cost</div>
-                  <strong style={{ fontSize: 18, color: 'var(--color-primary)' }}>₹{Math.round(currentPlan.evaluation?.weekly_purchase_cost || 0)}</strong>
+          <div className="grid-2" style={{ marginBottom: 20 }}>
+            {[
+              { mode: 'nutrition', label: 'Nutrition Plan', color: 'var(--color-green)', res: results?.nutrition },
+              { mode: 'budget',    label: 'Budget Plan',    color: 'var(--color-primary)', res: results?.budget },
+            ].map(({ mode, label, color, res }) => (
+              <div key={mode} className="card">
+                <div className="card-title" style={{ color, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <span>{label}</span>
+                  {res?.is_feasible && (
+                    <span className="badge badge-green" style={{ fontSize: 10 }}>
+                      <CheckCircle size={11} /> Ready
+                    </span>
+                  )}
                 </div>
-                <div>
-                  <div style={{ fontSize: 12, color: 'var(--color-text-muted)' }}>Nutrition Deviation</div>
-                  <strong style={{ fontSize: 18, color: 'var(--color-green)' }}>{((currentPlan.evaluation?.nutrition_deviation_score || 0) * 100).toFixed(1)}%</strong>
-                </div>
-                <div>
-                  <div style={{ fontSize: 12, color: 'var(--color-text-muted)' }}>Distinct Recipes</div>
-                  <strong style={{ fontSize: 18, color: 'var(--color-purple)' }}>{currentPlan.evaluation?.distinct_recipe_count || 0}</strong>
-                </div>
-                <div>
-                  <div style={{ fontSize: 12, color: 'var(--color-text-muted)' }}>Algorithm</div>
-                  <strong style={{ fontSize: 15 }}>{currentPlan.algorithm_name}</strong>
-                </div>
-                <div style={{ marginLeft: 'auto' }}>
-                  <button className="btn btn-outline btn-sm" onClick={() => nav('/meals')}>
-                    View Plan & Slots →
-                  </button>
-                </div>
+                {res?.is_feasible ? (
+                  <div style={{ fontSize: 13, lineHeight: 1.8, marginTop: 6 }}>
+                    <div>💰 Purchase: <strong>₹{Math.round(res.evaluation?.weekly_purchase_cost || 0)}</strong></div>
+                    <div>🎯 Deviation: <strong>{((res.evaluation?.nutrition_deviation_score || 0) * 100).toFixed(1)}%</strong></div>
+                    <div>🍽️ Recipes: <strong>{res.evaluation?.distinct_recipe_count || 0} distinct</strong></div>
+                    <div style={{ marginTop: 8 }}>
+                      <button className="btn btn-outline btn-sm" onClick={() => nav('/meals')}>
+                        View {label} →
+                      </button>
+                    </div>
+                  </div>
+                ) : (
+                  <div style={{ color: 'var(--color-text-muted)', fontSize: 13, padding: '6px 0' }}>
+                    No plan generated yet.
+                    <div style={{ marginTop: 8 }}>
+                      <button className="btn btn-primary btn-sm" onClick={() => nav('/meals')}>
+                        <UtensilsCrossed size={13} /> Generate Plan
+                      </button>
+                    </div>
+                  </div>
+                )}
               </div>
-            ) : (
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '6px 0' }}>
-                <span style={{ color: 'var(--color-text-muted)', fontSize: 13 }}>
-                  No meal plan generated yet. Generate an optimized plan in the Meals section.
-                </span>
-                <button className="btn btn-primary btn-sm" onClick={() => nav('/meals')}>
-                  <UtensilsCrossed size={14} /> Generate Plan
-                </button>
-              </div>
-            )}
+            ))}
           </div>
 
           {/* Quick actions */}

@@ -47,9 +47,9 @@ function Sidebar() {
 }
 
 function Header() {
-  const { dataset, validation, results, exportExcel } = useApp()
+  const { dataset, validation, results, exportExcel, activeMode, setActiveMode } = useApp()
 
-  const currentResult = results?.plan || results?.nutrition || Object.values(results || {})[0]
+  const currentResult = results?.[activeMode?.toLowerCase()] || results?.nutrition || Object.values(results || {})[0]
   const hasResult = currentResult?.is_feasible
 
   return (
@@ -68,10 +68,33 @@ function Header() {
         )}
       </span>
       <span className="header-spacer" />
+      <span style={{ fontSize: 12, color: 'var(--color-text-muted)', display: 'flex', alignItems: 'center', gap: 6 }}>
+        <span>Mode:</span>
+        {['Nutrition', 'Budget'].map(m => (
+          <button
+            key={m}
+            onClick={() => setActiveMode(m)}
+            style={{
+              padding: '2px 10px',
+              borderRadius: 999,
+              border: 'none',
+              fontSize: 11.5,
+              fontWeight: 600,
+              cursor: 'pointer',
+              background: activeMode === m ? 'var(--color-primary)' : 'var(--color-surface-2)',
+              color: activeMode === m ? '#fff' : 'var(--color-text-muted)',
+              transition: 'all 0.15s ease',
+            }}
+          >
+            {m}
+          </button>
+        ))}
+      </span>
       {hasResult && (
         <button
           className="btn btn-green btn-sm"
-          onClick={() => exportExcel('Nutrition')}
+          onClick={() => exportExcel(activeMode)}
+          style={{ marginLeft: 8 }}
         >
           <Download size={14} /> Export Plan
         </button>
@@ -112,4 +135,3 @@ export default function App() {
     </AppProvider>
   )
 }
-

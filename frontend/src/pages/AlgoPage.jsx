@@ -122,10 +122,16 @@ function BacktrackingPlan({ benchResult }) {
 }
 
 export default function AlgoPage() {
-  const { dataset, config, benchmark, runBenchmark, loading, error } = useApp()
+  const { dataset, config, benchmark, runBenchmark, loading, error, activeMode, setActiveMode } = useApp()
+  const [mode, setMode] = useState(activeMode || 'Nutrition')
 
   const isLoading = loading?.benchmark
   const benchError = error?.benchmark
+
+  const handleModeChange = (newMode) => {
+    setMode(newMode)
+    if (setActiveMode) setActiveMode(newMode)
+  }
 
   return (
     <div>
@@ -133,21 +139,30 @@ export default function AlgoPage() {
       <p className="section-sub">Compare all five algorithms on the same dataset and configuration</p>
 
       {/* Control bar */}
-      <div className="card" style={{ marginBottom: 20, display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 16 }}>
+      <div className="card" style={{ marginBottom: 20, display: 'flex', gap: 16, alignItems: 'center', flexWrap: 'wrap' }}>
         <div>
-          <div style={{ fontSize: 14, fontWeight: 600 }}>Benchmarking 5 Algorithms</div>
-          <div style={{ fontSize: 12, color: 'var(--color-text-muted)' }}>
-            Evaluates Brute Force, Greedy, Dynamic Programming, Backtracking, and Branch & Bound
+          <div style={{ fontSize: 12, fontWeight: 600, marginBottom: 4 }}>Optimization Mode</div>
+          <div style={{ display: 'flex', gap: 6 }}>
+            {['Nutrition', 'Budget'].map(m => (
+              <button
+                key={m}
+                onClick={() => handleModeChange(m)}
+                className={`btn btn-sm ${mode === m ? 'btn-primary' : 'btn-outline'}`}
+              >
+                {m}
+              </button>
+            ))}
           </div>
         </div>
+        <div style={{ flex: 1 }} />
         <button
           className="btn btn-primary"
           disabled={!dataset?.is_valid || isLoading}
-          onClick={() => runBenchmark()}
+          onClick={() => runBenchmark(mode)}
         >
           {isLoading
             ? <><span className="spinner" style={{ width: 14, height: 14 }} /> Running all algorithms…</>
-            : <><Play size={14} /> Run All Algorithms</>}
+            : <><Play size={14} /> Run All Algorithms ({mode})</>}
         </button>
       </div>
 
